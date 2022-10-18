@@ -1,0 +1,1 @@
+docker build --network host -t bob_isaac_common:latest -f dockerfile.x86_64 .

@@ -1,0 +1,17 @@
+ARG BASE_IMAGE="bob_isaac_common_x86_64:latest"
+FROM ${BASE_IMAGE}
+
+RUN source /opt/ros/foxy/setup.bash
+RUN mkdir -p /home/ros2_ws/src
+WORKDIR /home/ros2_ws
+
+RUN git clone -b release-ea3-hotfix1 https://github.com/BoxOnBot/isaac_ros_visual_slam.git src/isaac_ros_visual_slam
+RUN git clone -b release-ea3 https://github.com/BoxOnBot/isaac_ros_common.git src/isaac_ros_common
+RUN git clone -b release-ea3 https://github.com/BoxOnBot/isaac_ros_image_pipeline.git src/isaac_ros_image_pipeline
+
+# RUN colcon build --packages-select isaac_ros_common && colcon build --packages-select isaac_ros_image_proc
+# Copy entrypoint script
+COPY ./scripts/ros_entrypoint.sh /
+COPY ./scripts/build_ros_workspace.sh /
+RUN chmod +x /ros_entrypoint.sh
+RUN chmod +x /build_ros_workspace.sh
